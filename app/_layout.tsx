@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { colors, useReducedMotion } from '@/ui';
+import { SessionsProvider } from '@/modules/workout-sessions';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -39,6 +40,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={navigationTheme}>
       <StatusBar style="dark" />
+      <SessionsProvider>
         <Stack
           screenOptions={{
             contentStyle: { backgroundColor: colors.canvas },
@@ -50,8 +52,10 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="workout" options={{ title: 'Sample workout', headerBackTitle: 'Train' }} />
+          <Stack.Screen name="workout" options={{ title: 'Workout', headerBackTitle: 'Train' }} />
+          <Stack.Screen name="session" options={{ title: 'Your session', headerBackTitle: 'Train' }} />
         </Stack>
+      </SessionsProvider>
     </ThemeProvider>
   );
 }

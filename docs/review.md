@@ -19,3 +19,7 @@ Mobile App Builder hoàn tất shell và sửa ESLint __dirname, pin peer depend
 Agent chính đã đọc config Expo/package/TS/lint, routes, public exports, UI primitives và screens; không thấy blocker mã cho shell trong phạm vi đã kiểm tra. Native AX phát hiện icon glyph bị ghép tên Button; đã sửa label và xác nhận sau reload. Bốn probe ESLint alias deep import, relative deep import, public API và shared UI→domain cho kết quả đúng. Không có kiểm chứng nghiệp vụ session/XP vì chưa triển khai.
 
 Lint/typecheck trên Node24.22.2 PASS. Online expo install --check PASS. Export iOS/Android PASS. Metro mở Train, preview, Back, Progress và Explore Train qua Expo Go SDK57/iPhone17 Pro Simulator/iOS26.2. Expo CLI tự mở cửa sổ bị lỗi macOS Automation sau khi app đã nạp; chạy Metro riêng và reload hoạt động. Chưa test thiết bị thật/largest font/VoiceOver đầy đủ. npm audit còn 14 findings theo Builder; không tự nâng SDK hoặc audit fix --force.
+
+## Core workout — review một lượt cuối
+
+Code Reviewer đọc source hiện tại, chỉ tìm lỗi làm hỏng demo. Phát hiện: pause trước hiệp đầu ghi đè thời gian nghỉ thành0. Đã sửa bằng tách thời gian nghỉ cấu hình và phần còn lại khi pause; regression test bao gồm pause trước hiệp đầu và nhiều khoảng nghỉ. Không mở thêm vòng review. Reviewer không thấy blocker khác qua đọc mã; không coi đó là kiểm chứng runtime thiết bị.

@@ -45,3 +45,29 @@ Ngày mai không đủ để kiểm chứng toàn bộ tầm nhìn. Pose chưa q
 ## Sửa mismatch Expo Go — SDK58
 
 Người dùng thử iPhone thật và gửi lỗi Expo Go58/project57. Đã nâng Expo58.0.23, RN0.88.1, React19.3.0 và bộ native modules theo bundledNativeModules; React types19.3.x. Sửa tab icon dùng semantic color string theo focused để phù hợp kiểu RN mới. Dependency check, lint và typecheck PASS. Bundle iOS/Android được kiểm tra lại. Chưa xác nhận runtime SDK58 trên iPhone thật; kết quả Simulator trước đây thuộc SDK57.
+
+## Core workout — phạm vi mới ngày 2026-11-07
+
+Người dùng thu gọn ưu tiên về vòng tập khép kín, hoãn toàn bộ XP/leaderboard/events/AI/camera. Đang triển khai Train (catalog10 bài và filter), hướng dẫn, phiên tập/set/rest/pause/resume/cancel, kết quả đã lưu và Progress từ cùng snapshot. `workout-sessions` là owner dữ liệu; `exercise-catalog` sở hữu nội dung mẫu; Progress chỉ đọc. Storage boundary kiểm tra schemaVersion/invariants; không tự xóa file khi lỗi.
+
+Dependency mới: expo-file-system58.0.13 (MIT), có trong Expo Go. Không thêm camera dependency. Host kiểm tra lần này Node26.7.0; project vẫn pin .nvmrc24.22.2. Dependency check theo bundled SDK58 PASS ở chế độ offline; chưa coi là kiểm tra online registry.
+
+Simulator iPhone17 Pro/iOS26.2 chỉ có Expo Go57.0.9, đã mở và quan sát báo project cần Expo Go mới hơn. Chưa chạy được UI core SDK58 trong Simulator; chưa xác nhận iPhone13/iOS18.6 hoặc Android thật. Kết quả shell SDK57 trước đó không thay cho kiểm tra core mới.
+
+### Kết quả core
+
+- Hoàn tất Train/library10 bài + filter, detail/hướng dẫn, session timer/set/rest/skip-rest/pause/resume/cancel, summary, lịch sử và tổng tiến độ từ snapshot thật.
+- Một phiên hiện hành; Start/re-entry trả cùng phiên. Complete terminal/idempotent; lưu thành công mới publish trạng thái. Read error giữ file và cho retry. Cancel không vào lịch sử hoàn tất.
+- 8 domain/persistence tests PASS: reentry/reopen JSON, pause/rest, complete lặp, cancel, schema hỏng, failed-write/retry, concurrent20 starts/finishes, regression pause trước hiệp đầu.
+- Typecheck/lint PASS trên Node26.7.0. Export iOS/Android PASS; chưa phải IPA/APK hoặc device smoke. Node test có warning MODULE_TYPELESS_PACKAGE_JSON, không ảnh hưởng kết quả.
+- Chưa kiểm chứng runtime SDK58 trên iPhone/Android, đóng app thật trong lúc ghi, font scale lớn nhất/landscape/VoiceOver. Giới hạn Simulator ExpoGo57 nêu trên còn nguyên. Core là local self-report, không XP/AI/camera/sự kiện/leaderboard/backend.
+
+## AI Coach preview — sửa review 2026-11-08
+
+- Tab AI Coach nằm giữa Train và Progress, route mỏng, module sở hữu transcript/draft/intake trong RAM. Không gọi mạng/model hoặc ghi chat vào workout snapshot.
+- Sửa gửi/xác nhận/retry liên tiếp: kiểm tra khóa đồng bộ trước khi đổi revision/thêm message. Request cũ sau reset không chèn phản hồi/lỗi hoặc mở khóa request mới; dọn callback khi unmount.
+- Resolver dùng getExercise từ public API catalog thay danh sách squat viết cứng; ID không tồn tại không được điều hướng. Chuẩn hóa key fixture invalid_exercise_id.
+- Coach dùng color/typography/spacing/radius tokens của app; vùng chạm tối thiểu48, feedback nhấn và reduced-motion cho cuộn. Scenario mới xóa draft để tách dữ liệu mẫu.
+- README có walkthrough preview và điểm nối MedGemma; chưa có HTTP adapter/consent/auth server. DTO preview chưa phải contract backend hoàn chỉnh; phải map/validate theo hướng dẫn MedGemma ở bước sau.
+- Kiểm chứng trên Node26.7.0, bộ dependency theo package-lock hiện tại: lint/typecheck PASS, 14 tests PASS (8 workout + 6 Coach). Test Coach transpile mã thật rồi chạy callback với hooks/native giả lập; không phải native rendering/E2E. Export bundle iOS/Android PASS ra thư mục tạm; không phải IPA/APK. Warning MODULE_TYPELESS_PACKAGE_JSON của test workout còn nguyên, không làm test fail.
+- Chưa kiểm chứng render/keyboard/tab-back-state/font lớn/VoiceOver/TalkBack trên thiết bị của project. Simulator đang mở app khác (Forma Coach), không dùng làm bằng chứng runtime cho source này. Chưa chạy MedGemma hoặc đánh giá chuyên môn.

@@ -8,16 +8,19 @@ type ButtonProps = {
   label: string;
   onPress: () => void;
   accessibilityHint?: string;
+  disabled?: boolean;
 };
 
-export function Button({ label, onPress, accessibilityHint }: ButtonProps) {
+export function Button({ label, onPress, accessibilityHint, disabled = false }: ButtonProps) {
   return (
     <Pressable
+      disabled={disabled}
+      accessibilityState={{ disabled }}
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={accessibilityHint}
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.button, pressed && styles.pressed, disabled && { opacity: 0.5 }]}
     >
       <AppText variant="bodyStrong" style={styles.label}>
         {label}
